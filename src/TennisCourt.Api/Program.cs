@@ -2,6 +2,7 @@ using Steeltoe.Common.Hosting;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 using TennisCourt.Api.Configurations;
 using TennisCourt.Api.Swagger;
+using TennisCourt.Infra.CrossCutting.Commons.Providers;
 using TennisCourt.Infra.CrossCutting.IoC;
 using TennisCourt.Infra.Data.Context;
 using TennisCourt.Infra.Data.Context.Configurations;
@@ -41,6 +42,11 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.RegisterServices();
 
 builder.Services.AddAutoMapperSetup();
+
+
+builder.Services.AddSingleton<UserProvidedSettingsProvider>
+    (builder.Configuration.GetSection("UserProvidedSettingsProvider")
+    .Get<UserProvidedSettingsProvider>());
 
 builder.Services.AddDbContext<TennisCourtContext>();
 
