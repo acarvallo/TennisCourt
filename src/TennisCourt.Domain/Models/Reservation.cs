@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TennisCourt.Domain.Enums;
+using TennisCourt.Domain.Interfaces;
 using TennisCourt.Domain.Models.Base;
 
 namespace TennisCourt.Domain.Models
 {
-    public class Reservation : BaseEntity
+    public class Reservation : BaseEntity, IAggregateRoot
     {
-        public decimal Value { get;set; }
-        public ReservationStatusEnum ReservationStatus { get; set; }
-        public decimal RefundValue { get; set; }
+        public Reservation(DateTime reservedDate,decimal value)
+        {
+            ReservedDate = reservedDate;
+            Value = value;
+        }
+        public decimal Value { get; }
+        public decimal RefundValue { get; }
+        public DateTime ReservedDate { get; }
+        public ReservationStatusHistory ReservationStatus => ReservationHistory.SingleOrDefault(p => p.IsActive());
+        private IList<ReservationStatusHistory> ReservationHistory { get; set; }
     }
 }

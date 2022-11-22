@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TennisCourt.Domain.Enums;
 
 namespace TennisCourt.Domain.Models.Base
 {
     public abstract class BaseEntity
     {
-        public Guid Id { get; set; }
+        protected Guid Id { get; }
+        protected DateTime CreatedAt { get; } = DateTime.Now;
+        protected EntityStatusEnum Status { get; private set; } = EntityStatusEnum.Active;
+        internal bool IsActive() => Status == EntityStatusEnum.Active;
+        protected void Delete()
+        {
+            Status = EntityStatusEnum.Deleted;
+        }
+
     }
 }

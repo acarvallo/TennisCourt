@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace TennisCourt.Domain.Enums
 {
-    public enum ReservationStatusEnum
+    public enum EntityStatusEnum
     {
-        READY_TO_PLAY=1,
-        CANCELED=2,
-        RESCHEDULED=3,
+        Deleted=0,
+        Active=1,
     }
 }
