@@ -6,5 +6,6 @@ namespace TennisCourt.Domain.Interfaces.Repositories
 {
     public interface IReservationRepository :IBaseRepository<Reservation>
     {
+        Task<IEnumerable<Reservation>> GetByDate(DateTime date);    
     }
 }

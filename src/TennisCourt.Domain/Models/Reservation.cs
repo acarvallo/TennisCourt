@@ -20,7 +20,25 @@ namespace TennisCourt.Domain.Models
         public Money Amount { get; private set; }
         public Money RefundAmount { get; private set; }
         public DateTime ReservedDate { get; }
-        public ReservationStatusHistory ReservationStatus => ReservationHistory.Single(p => p.IsActive());
+        public ReservationStatusEnum ReservationStatus => ReservationHistory.Single(p => p.IsActive()).ReservationStatus;
         public IList<ReservationStatusHistory> ReservationHistory { get; private set; }
+
+        public override bool IsValid(IList<string> errors)
+        {
+            errors = new List<string>();
+
+            if (Amount <= 0)
+            {
+                errors.Add("Amount can't be zero or less than zero");
+            }
+
+            if (ReservedDate < DateTime.Now.Date)
+            {
+                errors.Add("Invalid reserved date");
+
+            }
+            return !errors.Any();
+        }
+
     }
 }

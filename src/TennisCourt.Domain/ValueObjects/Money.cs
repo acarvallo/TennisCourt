@@ -21,6 +21,13 @@ namespace TennisCourt.Domain.ValueObjects
         public static explicit operator decimal(Money money) => money.Value;
 
         public static explicit operator Money(decimal value) => new(value);
+        public static bool operator ==(Money right, decimal left) => right.Value == left;
+        public static bool operator !=(Money right, decimal left) => right.Value != left;
+        public static bool operator <=(Money right, decimal left) => right.Value <= left;
+        public static bool operator >=(Money right, decimal left) => right.Value >= left;
+        public static bool operator >(Money right, decimal left) => right.Value > left;
+        public static bool operator <(Money right, decimal left) => right.Value < left;
+
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using TennisCourt.Domain.Enums;
+﻿using System.Collections.Generic;
+using TennisCourt.Domain.Enums;
 
 namespace TennisCourt.Domain.Models.Base
 {
@@ -13,5 +14,10 @@ namespace TennisCourt.Domain.Models.Base
             Status = EntityStatusEnum.Deleted;
         }
 
+        public virtual bool IsValid(IList<string> errors)
+        {
+            errors = Array.Empty<string>();
+            return true;
+        }
     }
 }

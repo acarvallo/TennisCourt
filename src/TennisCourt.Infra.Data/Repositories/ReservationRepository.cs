@@ -3,6 +3,7 @@ using TennisCourt.Domain.Models;
 using TennisCourt.Infra.Data.Context;
 using TennisCourt.Infra.Data.Repositories.Base;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace TennisCourt.Infra.Data.Repositories
 {
@@ -11,6 +12,12 @@ namespace TennisCourt.Infra.Data.Repositories
         public ReservationRepository(TennisCourtContext context)
             : base(context)
         {
+        }
+        public override IQueryable<Reservation> GetAllQueryTracking => base.GetAllQueryTracking.Include(p=>p.ReservationHistory).AsQueryable();
+
+        public async Task<IEnumerable<Reservation>> GetByDate(DateTime date)
+        {
+            return await GetAllQueryTracking.Where(p => p.ReservedDate == date).ToListAsync();
         }
     }
 }

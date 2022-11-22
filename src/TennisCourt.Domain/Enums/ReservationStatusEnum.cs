@@ -8,5 +8,6 @@ namespace TennisCourt.Domain.Enums
         READY_TO_PLAY=1,
         CANCELED=2,
         RESCHEDULED=3,
+        DATE_NOT_AVAILABLE = 4,
     }
 }

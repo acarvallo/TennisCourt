@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using TennisCourt.Application.DTO;
 using TennisCourt.Application.DTO.ProcessReservation;
 using TennisCourt.Application.Interface;
 using TennisCourt.Domain.Interfaces.Repositories;
 using TennisCourt.Domain.Models;
+using TennisCourt.Domain.Models.Base;
+using TennisCourt.Domain.Services;
 using TennisCourt.Infra.CrossCutting.Commons.Extensions;
 
 namespace TennisCourt.Application.Services
@@ -12,11 +15,15 @@ namespace TennisCourt.Application.Services
 
         private readonly IReservationRepository _repository;
         private readonly IMapper _mapper;
+        private readonly ReservationManager _reservationManager;
 
-        public ReservationAppService(IReservationRepository repository, IMapper mapper)
+        public ReservationAppService(IReservationRepository repository,
+                                     IMapper mapper,
+                                     ReservationManager reservationManager)
         {
             _repository = repository;
             _mapper = mapper;
+            _reservationManager = reservationManager;
         }
 
         public Task<Reservation> CancelReservation(Reservation reservation)
@@ -29,16 +36,31 @@ namespace TennisCourt.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<ProcessReservationOutput> ProcessReservation(ProcessReservationInput input)
+        public async Task<RootOutput<ProcessReservationOutput>> ProcessReservation(ProcessReservationInput input)
         {
-            Reservation newReservation = new(input.RequestedDate, input.Amount);
-            await _repository.AddAsync(newReservation);
-            return _mapper.Map<Reservation, ProcessReservationOutput>(newReservation);
-        }
+            var reservationsByDate = await _repository.GetByDate(input.RequestedDate);
 
+            var domainResult = _reservationManager.ProcessReservation(input.RequestedDate, input.Amount, reservationsByDate.ToList());
+
+            if (domainResult.IsValid())
+            {
+                await _repository.AddAsync(domainResult.Entity);
+            }
+            return ConvertToOutput<ProcessReservationOutput, Reservation>(domainResult);
+        }
         public Task<Reservation> RescheduleReservation(Reservation reservation)
         {
             throw new NotImplementedException();
+        }
+        private RootOutput<TOutput> ConvertToOutput<TOutput, TEntity>(DomainResult<TEntity> domainResult) where TEntity: BaseEntity
+        {
+            if (domainResult.IsValid())
+            {
+                var dataOutput = _mapper.Map<TOutput>(domainResult.Entity);
+                return RootOutput<TOutput>.Sucess<TOutput>(dataOutput);
+            }
+               
+            return RootOutput<TOutput>.WithErrors(domainResult.Errors);
         }
     }
 }
