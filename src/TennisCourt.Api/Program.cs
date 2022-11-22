@@ -17,7 +17,6 @@ if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != Environments
     builder.UseCloudHosting();
 }
 
-
 builder.Services.AddControllersWithViews((options) =>
 {
     options.Conventions.Add(new ActionHidingConvention());
@@ -32,6 +31,13 @@ if (builder.Environment.IsDevelopment())
 // Setup Options framework with DI - Required for PCF Steeltoe
 builder.Services.AddOptions();
 
+builder.Configuration
+        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true, true);
+
+builder.Services.Configure<UserProvidedSettingsProvider>
+    (builder.Configuration.GetSection("UserProvidedSettingsProvider"));
+
 // Read from VCAP_SERVICES env variable and and generate keys to IConfiguration
 builder.Services.ConfigureCloudFoundryOptions(builder.Configuration);
 
@@ -42,11 +48,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.RegisterServices();
 
 builder.Services.AddAutoMapperSetup();
-
-
-builder.Services.AddSingleton<UserProvidedSettingsProvider>
-    (builder.Configuration.GetSection("UserProvidedSettingsProvider")
-    .Get<UserProvidedSettingsProvider>());
 
 builder.Services.AddDbContext<TennisCourtContext>();
 

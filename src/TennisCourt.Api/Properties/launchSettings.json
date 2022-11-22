@@ -16,7 +16,8 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7250;http://localhost:5250",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MIGRATION_CONNECTION_STRING": "Data Source=localhost; Initial Catalog=tennis-court-api; User Id=sa; Password=appTennisCourt!1"
       }
     },
     "IIS Express": {

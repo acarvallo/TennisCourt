@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace TennisCourt.Domain.Enums
 {
+    [DefaultValue(READY_TO_PLAY)]
     public enum ReservationStatusEnum
     {
         READY_TO_PLAY=1,

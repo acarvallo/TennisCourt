@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TennisCourt.Domain.Enums;
 using TennisCourt.Domain.Models.Base;
 
 namespace TennisCourt.Infra.Data.Context.Configurations.Base
@@ -11,7 +12,9 @@ namespace TennisCourt.Infra.Data.Context.Configurations.Base
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.CreatedAt).IsRequired();
-            builder.Property(x => x.Status).IsRequired();
+            builder.Property(x => x.Status)
+                   .HasDefaultValue(EntityStatusEnum.Active)
+                   .IsRequired();
         }
     }
 }

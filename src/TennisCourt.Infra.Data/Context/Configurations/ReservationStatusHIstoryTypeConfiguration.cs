@@ -9,7 +9,12 @@ namespace TennisCourt.Infra.Data.Context.Configurations
         public override void Configure(EntityTypeBuilder<ReservationStatusHistory> builder)
         {
             base.Configure(builder);
-            builder.Property(x => x.ReservationStatus).IsRequired();
+            builder
+                 .Property(x => x.ReservationStatus)
+                 .HasConversion<string>()
+                 .HasMaxLength(20)
+                 .IsRequired();
+
         }
     }
 }
