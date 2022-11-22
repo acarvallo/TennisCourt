@@ -10,6 +10,8 @@ namespace TennisCourt.Infra.Data.Context.Configurations.Base
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd();
+            builder.Property(x => x.CreatedAt).IsRequired();
+            builder.Property(x => x.Status).IsRequired();
         }
     }
 }
