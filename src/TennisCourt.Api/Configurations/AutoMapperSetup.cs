@@ -11,7 +11,7 @@ namespace TennisCourt.Api.Configurations
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             services.AddAutoMapper(typeof(DtoToDtoMappingProfile));
-            services.AddAutoMapper(typeof(DtoToDomainMappingProfile));
+            services.AddAutoMapper(typeof(DomainToDtoMappingProfile));
 
             AutoMapperConfig.RegisterMappings();
 

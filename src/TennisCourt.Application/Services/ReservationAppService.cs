@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TennisCourt.Application.DTO.ProcessReservation;
 using TennisCourt.Application.Interface;
 using TennisCourt.Domain.Interfaces.Repositories;
 using TennisCourt.Domain.Models;
@@ -10,9 +11,12 @@ namespace TennisCourt.Application.Services
     {
 
         private readonly IReservationRepository _repository;
-        public ReservationAppService(IReservationRepository repository)
+        private readonly IMapper _mapper;
+
+        public ReservationAppService(IReservationRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public Task<Reservation> CancelReservation(Reservation reservation)
@@ -25,9 +29,11 @@ namespace TennisCourt.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<Reservation> ProcessReservation(Reservation reservation)
+        public async Task<ProcessReservationOutput> ProcessReservation(ProcessReservationInput input)
         {
-            throw new NotImplementedException();
+            Reservation newReservation = new(input.RequestedDate, input.Amount);
+            await _repository.AddAsync(newReservation);
+            return _mapper.Map<Reservation, ProcessReservationOutput>(newReservation);
         }
 
         public Task<Reservation> RescheduleReservation(Reservation reservation)

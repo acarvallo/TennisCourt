@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TennisCourt.Application.DTO.ProcessReservation;
 using TennisCourt.Application.Interface;
 
 namespace TennisCourt.Api.Controllers
@@ -14,5 +15,11 @@ namespace TennisCourt.Api.Controllers
         }
 
 
+        [HttpPost]
+        [ProducesResponseType(typeof(ProcessReservationOutput), StatusCodes.Status200OK)]
+        public async Task<IActionResult>Post(ProcessReservationInput input)
+        {
+            return Ok(await _reservationService.ProcessReservation(input));
+        }
     }
 }
