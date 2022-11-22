@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using TennisCourt.Domain.Enums;
 using TennisCourt.Domain.Interfaces;
 using TennisCourt.Domain.Models.Base;
+using TennisCourt.Domain.ValueObjects;
 
 namespace TennisCourt.Domain.Models
 {
     public class Reservation : BaseEntity, IAggregateRoot
     {
-        public Reservation(DateTime reservedDate,decimal value)
+        public Reservation(DateTime reservedDate, decimal value)
         {
             ReservedDate = reservedDate;
-            Value = value;
+            Value = (Money)value;
         }
-        public decimal Value { get; private set; }
-        public decimal RefundValue { get; private set; }
+        public Money Value { get; private set; }
+        public Money RefundValue { get; private set; }
         public DateTime ReservedDate { get; }
         public ReservationStatusHistory ReservationStatus => ReservationHistory.SingleOrDefault(p => p.IsActive());
         public IList<ReservationStatusHistory> ReservationHistory { get; private set; }
