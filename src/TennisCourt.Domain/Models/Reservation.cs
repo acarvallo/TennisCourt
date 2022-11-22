@@ -21,7 +21,7 @@ namespace TennisCourt.Domain.Models
         public Money RefundAmount { get; private set; }
         public DateTime ReservedDate { get; }
         public ReservationStatusEnum ReservationStatus => ReservationHistory.Single(p => p.IsActive()).ReservationStatus;
-        public IList<ReservationStatusHistory> ReservationHistory { get; private set; }
+        public IList<ReservationStatusHistory> ReservationHistory { get; private set; } = new List<ReservationStatusHistory>();
 
         public override bool IsValid(IList<string> errors)
         {

@@ -18,7 +18,7 @@ namespace TennisCourt.Api.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ProcessReservationOutput), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Post(ProcessReservationInput input)
+        public async Task<IActionResult> Post([FromBody] ProcessReservationInput input)
         {
             var output = await _reservationService.ProcessReservation(input);
             return Result(output);

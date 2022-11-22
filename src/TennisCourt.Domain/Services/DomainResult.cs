@@ -17,7 +17,7 @@ namespace TennisCourt.Domain.Services
         public TEntity Entity { get; private set; }
         public List<string> Errors { get; private set; } = new List<string>();
         public void AddMessage(string error) => Errors.Add(error);
-        public bool IsValid() => Errors.Any();
+        public bool IsValid() => !Errors.Any();
         public static DomainResult<TEntity> Create() => new();
 
         public void AddErrors(IList<string> errors)

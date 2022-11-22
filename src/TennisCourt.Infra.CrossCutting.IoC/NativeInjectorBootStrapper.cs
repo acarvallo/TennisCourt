@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TennisCourt.Application.Interface;
 using TennisCourt.Application.Services;
 using TennisCourt.Domain.Interfaces.Repositories;
+using TennisCourt.Domain.Services;
 using TennisCourt.Infra.Data.Repositories;
 using TennisCourt.Infra.Data.Repositories.Base;
 
@@ -15,8 +16,13 @@ namespace TennisCourt.Infra.CrossCutting.IoC
         {
             RegisterInfraServices(services);
             RegisterApplicationServices(services);
-
+            RegisterDomainService(services);
             return services;
+        }
+
+        private static void RegisterDomainService(IServiceCollection services)
+        {
+            services.AddScoped<ReservationManager>();
         }
 
         private static void RegisterInfraServices(IServiceCollection services)

@@ -11,11 +11,12 @@ namespace TennisCourt.Infra.Data.Context.Configurations
         public override void Configure(EntityTypeBuilder<Reservation> builder)
         {
             base.Configure(builder);
-
+            builder.Property(p => p.ReservedDate).IsRequired();
             builder.OwnsOne(x => x.RefundAmount,
                             x => x.Property(p => p.Value)
-                            .      HasColumnName("RefundAmount")
-                                  .HasPrecision(18, 2) );
+                                  .HasColumnName("RefundAmount")
+                                  .HasDefaultValue(0)
+                                  .HasPrecision(18, 2));
 
             builder.OwnsOne(x => x.Amount, r => r.Property(p => p.Value)
                                                     .IsRequired()

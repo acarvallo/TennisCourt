@@ -31,6 +31,9 @@ namespace TennisCourt.Infra.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ReservedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -96,8 +99,10 @@ namespace TennisCourt.Infra.Data.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Value")
+                                .ValueGeneratedOnAdd()
                                 .HasPrecision(18, 2)
                                 .HasColumnType("decimal(18,2)")
+                                .HasDefaultValue(0m)
                                 .HasColumnName("RefundAmount");
 
                             b1.HasKey("ReservationId");

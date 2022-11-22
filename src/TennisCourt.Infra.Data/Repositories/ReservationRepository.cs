@@ -17,7 +17,14 @@ namespace TennisCourt.Infra.Data.Repositories
 
         public async Task<IEnumerable<Reservation>> GetByDate(DateTime date)
         {
-            return await GetAllQueryTracking.Where(p => p.ReservedDate == date).ToListAsync();
+            try
+            {
+                return await GetAllQueryTracking.Where(p => p.ReservedDate == date).ToListAsync();
+            }
+            catch 
+            {
+                throw;
+            }
         }
     }
 }

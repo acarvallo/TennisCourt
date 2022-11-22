@@ -12,7 +12,7 @@ using TennisCourt.Infra.Data.Context;
 namespace TennisCourt.Infra.Data.Migrations
 {
     [DbContext(typeof(TennisCourtContext))]
-    [Migration("20221122140808_InitialCreate")]
+    [Migration("20221122225329_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace TennisCourt.Infra.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReservedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
@@ -98,8 +101,10 @@ namespace TennisCourt.Infra.Data.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Value")
+                                .ValueGeneratedOnAdd()
                                 .HasPrecision(18, 2)
                                 .HasColumnType("decimal(18,2)")
+                                .HasDefaultValue(0m)
                                 .HasColumnName("RefundAmount");
 
                             b1.HasKey("ReservationId");

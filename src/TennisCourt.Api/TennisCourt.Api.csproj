@@ -25,6 +25,8 @@
     <ProjectReference Include="..\TennisCourt.Application\TennisCourt.Application.csproj" />
     <ProjectReference Include="..\TennisCourt.Infra.CrossCutting.IoC\TennisCourt.Infra.CrossCutting.IoC.csproj" />
   </ItemGroup>
-
+  <ItemGroup>
+    <InternalsVisibleTo Include ="TennisCourt.Unit.Tests"/>
+  </ItemGroup>
 
 </Project>
