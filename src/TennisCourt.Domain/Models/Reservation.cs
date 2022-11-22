@@ -14,10 +14,10 @@ namespace TennisCourt.Domain.Models
             ReservedDate = reservedDate;
             Value = value;
         }
-        public decimal Value { get; }
-        public decimal RefundValue { get; }
+        public decimal Value { get; private set; }
+        public decimal RefundValue { get; private set; }
         public DateTime ReservedDate { get; }
         public ReservationStatusHistory ReservationStatus => ReservationHistory.SingleOrDefault(p => p.IsActive());
-        private IList<ReservationStatusHistory> ReservationHistory { get; set; }
+        public IList<ReservationStatusHistory> ReservationHistory { get; private set; }
     }
 }
