@@ -4,10 +4,13 @@ using TennisCourt.Infra.Data.Context;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using TennisCourt.Domain.Models.Base;
+using TennisCourt.Domain.Interfaces;
 
 namespace TennisCourt.Infra.Data.Repositories.Base
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
+    public class BaseRepository<TEntity> :
+                    IBaseRepository<TEntity> 
+                    where TEntity : BaseEntity, IAggregateRoot
     {
         protected DbSet<TEntity> DbSet { get; }
         protected TennisCourtContext Db { get; }
