@@ -84,8 +84,8 @@ namespace TennisCourt.Unit.Tests.Features
         [Xunit.TraitAttribute("FeatureTitle", "RescheduleReservation")]
         [Xunit.TraitAttribute("Description", "RescheduleReservationNewDate")]
         [Xunit.TraitAttribute("Category", "tag1")]
-        [Xunit.InlineDataAttribute("RESCHEDULED", new string[0])]
-        public void RescheduleReservationNewDate(string statusReservation, string[] exampleTags)
+        [Xunit.InlineDataAttribute("RESCHEDULED", "2", new string[0])]
+        public void RescheduleReservationNewDate(string statusReservation, string addDays, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "tag1"};
@@ -96,6 +96,7 @@ namespace TennisCourt.Unit.Tests.Features
             string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("statusReservation", statusReservation);
+            argumentsOfScenario.Add("addDays", addDays);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("RescheduleReservationNewDate", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
@@ -108,13 +109,49 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 7
- testRunner.Given("the id of existing and active reservation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("the id of existing and active reservation and with date {0} ahead and new date av" +
+                            "ailable to reschedule", addDays), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 8
  testRunner.When("reschedule reservation is requested", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 9
- testRunner.Then(string.Format("same reservation id with status {0}", statusReservation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("same reservation id with status {0} and date changed", statusReservation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="RescheduleReservationNewDateUnavailabe")]
+        [Xunit.TraitAttribute("FeatureTitle", "RescheduleReservation")]
+        [Xunit.TraitAttribute("Description", "RescheduleReservationNewDateUnavailabe")]
+        [Xunit.InlineDataAttribute("Date not availabe", "2", new string[0])]
+        public void RescheduleReservationNewDateUnavailabe(string message, string addDays, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("message", message);
+            argumentsOfScenario.Add("addDays", addDays);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("RescheduleReservationNewDateUnavailabe", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 14
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 15
+ testRunner.Given(string.Format("the id of existing and active reservation and with date {0} ahead and new date un" +
+                            "available to reschedule", addDays), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+ testRunner.When("reschedule reservation is requested", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 17
+ testRunner.Then(string.Format("should return error message {0}", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

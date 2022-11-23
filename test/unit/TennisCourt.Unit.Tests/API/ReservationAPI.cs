@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TennisCourt.Application.DTO;
 using TennisCourt.Application.DTO.CancelReservation;
 using TennisCourt.Application.DTO.ProcessReservation;
+using TennisCourt.Application.DTO.RescheduleReservation;
 using TennisCourt.Infra.CrossCutting.Commons.Extensions;
 
 namespace TennisCourt.Unit.Tests.API
@@ -30,6 +31,17 @@ namespace TennisCourt.Unit.Tests.API
 
             return await GetOutput<RootOutput<ProcessReservationOutput>>(response);
         }
+        public async Task<RootOutput<RescheduleReservationOutput>> RescheduleReservation(Guid id, DateTime newDate)
+        {
+            var input = new RescheduleReservationInput() 
+            { NewDate = newDate, ReservationId = id };
+
+            var response = await _client.PostAsync("reservation/reschedule", ToContent(input));
+
+            return await GetOutput<RootOutput<RescheduleReservationOutput>>(response);
+
+        }
+
         public async Task<RootOutput<CancelReservationOutput>> CancelReservation(Guid id)
         {
             var response = await _client.PutAsync($"reservation/{id}/cancel", null);
@@ -41,7 +53,7 @@ namespace TennisCourt.Unit.Tests.API
             return (await response.Content.ReadAsStringAsync()).ToObject<TOutput>();
         }
 
-        private static StringContent ToContent(ProcessReservationInput input)
+        private static StringContent ToContent(object input)
         {
             var content = new StringContent(input.ToJson());
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
