@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TennisCourt.Application.DTO;
 using TennisCourt.Application.DTO.CancelReservation;
+using TennisCourt.Application.DTO.GetReservation;
 using TennisCourt.Application.DTO.ProcessReservation;
 using TennisCourt.Application.DTO.RescheduleReservation;
 using TennisCourt.Application.Interface;
@@ -44,13 +45,21 @@ namespace TennisCourt.Application.Services
                await _repository.UpdateAsync(reservation);
             }
 
-            return ConvertToOutput<CancelReservationOutput, Reservation>(domainResult);
+            return ConvertDomainResultToOutput<CancelReservationOutput>(domainResult);
 
         }
 
-        public Task<Reservation> GetReservation(Guid id)
+        public async Task<RootOutput<GetReservationOuput>> GetReservation(Guid id)
         {
-            throw new NotImplementedException();
+            var reservation = await _repository.GetByIdAsync(id);
+
+            if (reservation == null)
+            {
+                return RootOutput<GetReservationOuput>.WithErrors("Invalid reservation ID");
+            }
+
+            return MapOutput<GetReservationOuput>(reservation);
+
         }
 
         public async Task<RootOutput<ProcessReservationOutput>> ProcessReservation(ProcessReservationInput input)
@@ -63,7 +72,7 @@ namespace TennisCourt.Application.Services
             {
                 await _repository.AddAsync(domainResult.Entity);
             }
-            return ConvertToOutput<ProcessReservationOutput, Reservation>(domainResult);
+            return ConvertDomainResultToOutput<ProcessReservationOutput>(domainResult);
         }
         public async Task<RootOutput<RescheduleReservationOutput>> RescheduleReservation(RescheduleReservationInput input)
         {
@@ -83,18 +92,23 @@ namespace TennisCourt.Application.Services
                 var updatedReservation = domainResult.Entity;
                 await _repository.UpdateAsync(updatedReservation);
             }
-            return ConvertToOutput<RescheduleReservationOutput,Reservation>(domainResult);
+            return ConvertDomainResultToOutput<RescheduleReservationOutput>(domainResult);
 
         }
-        private RootOutput<TOutput> ConvertToOutput<TOutput, TEntity>(DomainResult<TEntity> domainResult) where TEntity : BaseEntity
+        private RootOutput<TOutput> ConvertDomainResultToOutput<TOutput>(DomainResult<Reservation> domainResult)
         {
             if (domainResult.IsValid())
             {
-                var dataOutput = _mapper.Map<TOutput>(domainResult.Entity);
-                return RootOutput<TOutput>.Sucess<TOutput>(dataOutput);
+                return MapOutput<TOutput>(domainResult.Entity);
             }
 
             return RootOutput<TOutput>.WithErrors(domainResult.Errors);
+        }
+
+        private RootOutput<TOutput> MapOutput<TOutput>(Reservation entity)
+        {
+            var dataOutput = _mapper.Map<TOutput>(entity);
+            return RootOutput<TOutput>.Sucess<TOutput>(dataOutput);
         }
     }
 }

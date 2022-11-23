@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TennisCourt.Application.DTO;
 using TennisCourt.Application.DTO.CancelReservation;
+using TennisCourt.Application.DTO.GetReservation;
 using TennisCourt.Application.DTO.ProcessReservation;
 using TennisCourt.Application.DTO.RescheduleReservation;
 using TennisCourt.Domain.Interfaces.Repositories;
@@ -17,6 +18,6 @@ namespace TennisCourt.Application.Interface
         Task<RootOutput<ProcessReservationOutput>> ProcessReservation(ProcessReservationInput input);
         Task<RootOutput<CancelReservationOutput>> CancelReservation(CancelReservationInput input);
         Task<RootOutput<RescheduleReservationOutput>> RescheduleReservation(RescheduleReservationInput input);
-        Task<Reservation> GetReservation(Guid id);
+        Task<RootOutput<GetReservationOuput>> GetReservation(Guid id);
     }
 }
