@@ -23,6 +23,19 @@ namespace TennisCourt.Domain.Models
         public ReservationStatusEnum ReservationStatus => ReservationHistory.Single(p => p.IsActive()).ReservationStatus;
         public IList<ReservationStatusHistory> ReservationHistory { get; private set; } = new List<ReservationStatusHistory>();
 
+        public void Cancel()
+        {
+            ChangeStatus(ReservationStatusEnum.CANCELED);
+        }
+
+        private void ChangeStatus(ReservationStatusEnum newStatus)
+        {
+            var currentStatus = ReservationHistory.Single(p => p.IsActive());
+            currentStatus.Delete();
+            var newStatusHistory = new ReservationStatusHistory(newStatus);
+            ReservationHistory.Add(newStatusHistory);
+        }
+
         public override bool IsValid(IList<string> errors)
         {
             if (Amount <= 0)

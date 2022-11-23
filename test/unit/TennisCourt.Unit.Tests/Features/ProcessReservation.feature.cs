@@ -198,7 +198,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("amount", amount);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ProcessReservationAmountInvalid", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 33
- this.ScenarioInitialize(scenarioInfo);
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {

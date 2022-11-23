@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TennisCourt.Application.DTO;
+using TennisCourt.Application.DTO.CancelReservation;
 using TennisCourt.Application.DTO.ProcessReservation;
 using TennisCourt.Application.Interface;
 using TennisCourt.Domain.Interfaces.Repositories;
@@ -26,9 +27,24 @@ namespace TennisCourt.Application.Services
             _reservationManager = reservationManager;
         }
 
-        public Task<Reservation> CancelReservation(Reservation reservation)
+        public async Task<RootOutput<CancelReservationOutput>> CancelReservation(CancelReservationInput input)
         {
-            throw new NotImplementedException();
+            var reservation = await _repository.GetByIdAsync(input.ReservationId);
+
+            if (reservation == null)
+            {
+                return RootOutput<CancelReservationOutput>.WithErrors("Invalid reservation ID");
+            }
+
+            var domainResult = _reservationManager.CancelReservation(reservation);
+
+            if (domainResult.IsValid())
+            {
+               await _repository.UpdateAsync(domainResult.Entity);
+            }
+
+            return ConvertToOutput<CancelReservationOutput, Reservation>(domainResult);
+
         }
 
         public Task<Reservation> GetReservation(Guid id)
@@ -52,14 +68,14 @@ namespace TennisCourt.Application.Services
         {
             throw new NotImplementedException();
         }
-        private RootOutput<TOutput> ConvertToOutput<TOutput, TEntity>(DomainResult<TEntity> domainResult) where TEntity: BaseEntity
+        private RootOutput<TOutput> ConvertToOutput<TOutput, TEntity>(DomainResult<TEntity> domainResult) where TEntity : BaseEntity
         {
             if (domainResult.IsValid())
             {
                 var dataOutput = _mapper.Map<TOutput>(domainResult.Entity);
                 return RootOutput<TOutput>.Sucess<TOutput>(dataOutput);
             }
-               
+
             return RootOutput<TOutput>.WithErrors(domainResult.Errors);
         }
     }

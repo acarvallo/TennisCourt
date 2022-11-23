@@ -9,7 +9,7 @@ using TennisCourt.Domain.Interfaces;
 namespace TennisCourt.Infra.Data.Repositories.Base
 {
     public class BaseRepository<TEntity> :
-                    IBaseRepository<TEntity> 
+                    IBaseRepository<TEntity>
                     where TEntity : BaseEntity, IAggregateRoot
     {
         protected DbSet<TEntity> DbSet { get; }
@@ -50,7 +50,12 @@ namespace TennisCourt.Infra.Data.Repositories.Base
             await Db.SaveChangesAsync();
             return entity;
         }
-
+        public async Task<TEntity> UpdateAsync(TEntity entity)
+        {
+            DbSet.Update(entity);
+            await Db.SaveChangesAsync();
+            return entity;
+        }
         public async Task<List<TEntity>> AddRangeAsync(List<TEntity> entities)
         {
             await DbSet.AddRangeAsync(entities);

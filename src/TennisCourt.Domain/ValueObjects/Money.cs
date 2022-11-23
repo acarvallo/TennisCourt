@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using TennisCourt.Domain.ValueObjects.Base;
 
 namespace TennisCourt.Domain.ValueObjects
@@ -14,6 +10,10 @@ namespace TennisCourt.Domain.ValueObjects
             Value = value;
         }
         public decimal Value { get; }
+        public override string ToString()
+        {
+            return Value.ToString($"C", CultureInfo.CurrentCulture);
+        }
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;

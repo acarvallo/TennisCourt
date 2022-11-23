@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TennisCourt.Application.DTO.ProcessReservation
+namespace TennisCourt.Application.DTO.CancelReservation
 {
-    public class ProcessReservationOutput 
+    public class CancelReservationOutput
     {
         public Guid ReservationId { get; set; }
         public string ReservationStatus { get; set; }
-        public DateTime ReservedDate { get; set; }
-        public string Amount { get; internal set; }
+        public DateTime ReservedDate { get;  set; }
+        public string Amount { get; set; }
     }
 }
