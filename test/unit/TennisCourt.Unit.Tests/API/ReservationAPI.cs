@@ -2,8 +2,10 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using TennisCourt.Api.Requests;
 using TennisCourt.Application.DTO;
 using TennisCourt.Application.DTO.CancelReservation;
+using TennisCourt.Application.DTO.GetReservation;
 using TennisCourt.Application.DTO.ProcessReservation;
 using TennisCourt.Application.DTO.RescheduleReservation;
 using TennisCourt.Infra.CrossCutting.Commons.Extensions;
@@ -33,10 +35,10 @@ namespace TennisCourt.Unit.Tests.API
         }
         public async Task<RootOutput<RescheduleReservationOutput>> RescheduleReservation(Guid id, DateTime newDate)
         {
-            var input = new RescheduleReservationInput() 
-            { NewDate = newDate, ReservationId = id };
+            var input = new RescheduleReservationRequest()
+            { NewDate = newDate };
 
-            var response = await _client.PostAsync("reservation/reschedule", ToContent(input));
+            var response = await _client.PostAsync($"reservation/{id}/reschedule", ToContent(input));
 
             return await GetOutput<RootOutput<RescheduleReservationOutput>>(response);
 
@@ -47,6 +49,12 @@ namespace TennisCourt.Unit.Tests.API
             var response = await _client.PutAsync($"reservation/{id}/cancel", null);
 
             return await GetOutput<RootOutput<CancelReservationOutput>>(response);
+        }
+
+        public async Task<RootOutput<GetReservationOutput>> GetReservation(Guid id)
+        {
+            var response = await _client.GetAsync($"reservation/{id}");
+            return await GetOutput<RootOutput<GetReservationOutput>>(response);
         }
         private async Task<TOutput> GetOutput<TOutput>(HttpResponseMessage response)
         {

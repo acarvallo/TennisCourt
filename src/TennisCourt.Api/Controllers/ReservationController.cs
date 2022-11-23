@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TennisCourt.Api.Requests;
 using TennisCourt.Application.DTO;
 using TennisCourt.Application.DTO.CancelReservation;
 using TennisCourt.Application.DTO.GetReservation;
@@ -18,7 +19,6 @@ namespace TennisCourt.Api.Controllers
             _reservationService = reservationService;
         }
 
-
         [HttpPost]
         [ProducesResponseType(typeof(RootOutput<ProcessReservationOutput>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Post([FromBody] ProcessReservationInput input)
@@ -27,19 +27,23 @@ namespace TennisCourt.Api.Controllers
             return Result(output);
         }
 
-
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(RootOutput<GetReservationOuput>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RootOutput<GetReservationOutput>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             var output = await _reservationService.GetReservation(id);
             return Result(output);
         }
 
-        [HttpPost("reschedule")]
+        [HttpPost("{id}/reschedule")]
         [ProducesResponseType(typeof(RootOutput<RescheduleReservationOutput>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Post([FromBody] RescheduleReservationInput input)
+        public async Task<IActionResult> Post([FromRoute] Guid id, [FromBody] RescheduleReservationRequest request)
         {
+            var input = new RescheduleReservationInput()
+            {
+                ReservationId = id,
+                NewDate = request.NewDate
+            };
             var output = await _reservationService.RescheduleReservation(input);
             return Result(output);
         }

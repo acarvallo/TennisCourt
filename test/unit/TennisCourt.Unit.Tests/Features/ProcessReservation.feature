@@ -8,8 +8,8 @@ Scenario: ProcessReservationAvailableDate
 	Then process reservation returing a valid GUID reservation id
 	Examples: 
 	| daysToAdd | amount |
-	| 1         | 100    |
-	| 2         | 10     |
+	| 5         | 100    |
+	| 6         | 10     |
 	
 Scenario: ProcessReservationUnavailabeDate
 	Given selected date D plus <daysToAdd> and amount of <amount>
@@ -36,5 +36,5 @@ Scenario: ProcessReservationAmountInvalid
 	Then process reservation should return invalid amount error message
 	Examples: 
 	| daysToAdd | amount |
-	| 1         | 0      |
-	| 2         | -10    |
+	| 7         | 0      |
+	| 8         | -10    |

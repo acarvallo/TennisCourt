@@ -22,6 +22,7 @@ namespace TennisCourt.Application.AutoMapper
                  .ForMember(p => p.ReservationId, src => src.MapFrom(p => p.Id))
                  .ForMember(p=>p.ReservedDate,src=>src.MapFrom(p=>p.ReservedDate))
                  .ForMember(p => p.Amount, src => src.MapFrom(p => p.Amount.Value))
+                 .ForMember(p => p.RefundAmount, src => src.MapFrom(p => p.RefundAmount.Value))
                  .ForMember(p => p.ReservationStatus, src => src.MapFrom(p => p.ReservationStatus.ToString()));
 
             CreateMap<Reservation, RescheduleReservationOutput>()
@@ -36,7 +37,7 @@ namespace TennisCourt.Application.AutoMapper
                  .ForMember(p => p.RefundAmount, src => src.MapFrom(p => p.RefundAmount.Value))
                  .ForMember(p => p.ReservationStatus, src => src.MapFrom(p => p.ReservationStatus.ToString()));
 
-            CreateMap<Reservation, GetReservationOuput>()
+            CreateMap<Reservation, GetReservationOutput>()
                   .ForMember(p => p.ReservationId, src => src.MapFrom(p => p.Id))
                   .ForMember(p => p.ReservedDate, src => src.MapFrom(p => p.ReservedDate))
                   .ForMember(p => p.Amount, src => src.MapFrom(p => p.Amount.Value))

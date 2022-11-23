@@ -3,7 +3,7 @@
 A short summary of the feature
 
 @tag1
-Scenario: [scenario name]
-	Given [context]
-	When [action]
-	Then [outcome]
+Scenario: GetReservationDetails
+	Given the id of a existing reservation
+	When reservation data is requested
+	Then complete details of valid reservation

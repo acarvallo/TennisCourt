@@ -83,8 +83,8 @@ namespace TennisCourt.Unit.Tests.Features
         [Xunit.SkippableTheoryAttribute(DisplayName="ProcessReservationAvailableDate")]
         [Xunit.TraitAttribute("FeatureTitle", "ProcessReservation")]
         [Xunit.TraitAttribute("Description", "ProcessReservationAvailableDate")]
-        [Xunit.InlineDataAttribute("1", "100", new string[0])]
-        [Xunit.InlineDataAttribute("2", "10", new string[0])]
+        [Xunit.InlineDataAttribute("5", "100", new string[0])]
+        [Xunit.InlineDataAttribute("6", "10", new string[0])]
         public void ProcessReservationAvailableDate(string daysToAdd, string amount, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
@@ -188,8 +188,8 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableTheoryAttribute(DisplayName="ProcessReservationAmountInvalid")]
         [Xunit.TraitAttribute("FeatureTitle", "ProcessReservation")]
         [Xunit.TraitAttribute("Description", "ProcessReservationAmountInvalid")]
-        [Xunit.InlineDataAttribute("1", "0", new string[0])]
-        [Xunit.InlineDataAttribute("2", "-10", new string[0])]
+        [Xunit.InlineDataAttribute("7", "0", new string[0])]
+        [Xunit.InlineDataAttribute("8", "-10", new string[0])]
         public void ProcessReservationAmountInvalid(string daysToAdd, string amount, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;

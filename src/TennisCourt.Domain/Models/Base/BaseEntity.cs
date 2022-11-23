@@ -8,7 +8,7 @@ namespace TennisCourt.Domain.Models.Base
         public Guid Id { get; }
         public DateTime CreatedAt { get; } = DateTime.Now;
         public EntityStatusEnum Status { get; private set; } = EntityStatusEnum.Active;
-        internal bool IsActive() => Status == EntityStatusEnum.Active;
+        public bool IsActive() => Status == EntityStatusEnum.Active;
         public void Delete()
         {
             Status = EntityStatusEnum.Deleted;

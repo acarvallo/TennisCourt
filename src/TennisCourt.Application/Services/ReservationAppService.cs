@@ -49,16 +49,16 @@ namespace TennisCourt.Application.Services
 
         }
 
-        public async Task<RootOutput<GetReservationOuput>> GetReservation(Guid id)
+        public async Task<RootOutput<GetReservationOutput>> GetReservation(Guid id)
         {
             var reservation = await _repository.GetByIdAsync(id);
 
             if (reservation == null)
             {
-                return RootOutput<GetReservationOuput>.WithErrors("Invalid reservation ID");
+                return RootOutput<GetReservationOutput>.WithErrors("Invalid reservation ID");
             }
 
-            return MapOutput<GetReservationOuput>(reservation);
+            return MapOutput<GetReservationOutput>(reservation);
 
         }
 

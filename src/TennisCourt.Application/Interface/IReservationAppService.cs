@@ -18,6 +18,6 @@ namespace TennisCourt.Application.Interface
         Task<RootOutput<ProcessReservationOutput>> ProcessReservation(ProcessReservationInput input);
         Task<RootOutput<CancelReservationOutput>> CancelReservation(CancelReservationInput input);
         Task<RootOutput<RescheduleReservationOutput>> RescheduleReservation(RescheduleReservationInput input);
-        Task<RootOutput<GetReservationOuput>> GetReservation(Guid id);
+        Task<RootOutput<GetReservationOutput>> GetReservation(Guid id);
     }
 }
