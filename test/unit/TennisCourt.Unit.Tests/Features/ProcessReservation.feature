@@ -29,3 +29,12 @@ Scenario: ProcessReservationretroactiveDate
 	| -1         | 100    |
 	| -2         | 10     |
 
+
+Scenario: ProcessReservationAmountInvalid
+	Given selected date D plus <daysToAdd> and amount of <amount>
+	When reservation is requested
+	Then process reservation should return invalid amount error message
+	Examples: 
+	| daysToAdd | amount |
+	| 1         | 0      |
+	| 2         | -10    |

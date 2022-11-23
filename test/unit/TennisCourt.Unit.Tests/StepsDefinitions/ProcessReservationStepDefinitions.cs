@@ -57,5 +57,11 @@ namespace TennisCourt.Unit.Tests.StepsDefinitions
         {
             _output.Messages.Should().Contain("Invalid reserved date");
         }
+
+        [Then("process reservation should return invalid amount error message")]
+        public void ThenShouldReturnInvalidAmountError()
+        {
+            _output.Messages.Should().Contain("Amount can't be zero or less than zero");
+        }
     }
 }
