@@ -18,12 +18,12 @@ namespace TennisCourt.Domain.Services
             var errors = new List<string>();
             if (!newReservation.IsValid(errors))
             {
-                result.AddErrors(errors);
+                result.AddMessages(errors);
                 return result;
             }
             if(!IsDateAvailable(newReservation,reservationsByDate))
             {
-                result.AddMessage("Data não disponível");
+                result.AddMessage("Date not availabe");
                 return result;
             }
 

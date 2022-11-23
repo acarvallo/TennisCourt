@@ -25,8 +25,6 @@ namespace TennisCourt.Domain.Models
 
         public override bool IsValid(IList<string> errors)
         {
-            errors = new List<string>();
-
             if (Amount <= 0)
             {
                 errors.Add("Amount can't be zero or less than zero");

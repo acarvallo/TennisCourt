@@ -1,11 +1,10 @@
 ﻿using FluentAssertions;
 using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using TennisCourt.Application.DTO;
 using TennisCourt.Application.DTO.ProcessReservation;
-using TennisCourt.Infra.CrossCutting.Commons.Extensions;
+using TennisCourt.Unit.Tests.API;
 
 namespace TennisCourt.Unit.Tests.StepsDefinitions
 {
@@ -15,41 +14,48 @@ namespace TennisCourt.Unit.Tests.StepsDefinitions
     {
         private DateTime _selectedReservationDate;
         private decimal _amount;
-        private static HttpClient _client;
         private RootOutput<ProcessReservationOutput> _output;
-        private ProcessReservationInput _input;
-        private HttpResponseMessage _response;
-        public ProcessReservationStepDefinitions()
+
+        private readonly ReservationAPI _reservationAPI;
+
+        public ProcessReservationStepDefinitions(ReservationAPI reservationAPI)
         {
-            _client = Hooks.Hooks._client;
+            _reservationAPI = reservationAPI;
         }
-        [Given("selected advanced date and amount of (.*)")]
-        public void GivenSelectedDate(decimal amount)
+        [Given(@"selected date D plus (.*) and amount of (.*)")]
+        public void GivenSelectedDate(int addDays, decimal amount)
         {
-            _selectedReservationDate = DateTime.Today.AddDays(5);
+           _selectedReservationDate = DateTime.Today.AddDays(addDays);
             _amount = amount;
         }
-        [When("date is available to reservation")]
-        public void WhenDateAvailable()
+        [When("reservation is requested")]
+        public async Task WhenRservationRequested()
         {
-            _input = new ProcessReservationInput()
-            {
-                RequestedDate = _selectedReservationDate,
-                Amount = _amount
-            };
-            var content = new StringContent(_input.ToJson());
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            _response = _client.PostAsync("reservation", content).Result;
+            _output = await _reservationAPI.ProcessReservation(_selectedReservationDate, _amount);
         }
         [Then("process reservation returing a valid GUID reservation id")]
         public void ThenReservationNewID()
         {
-            _response.EnsureSuccessStatusCode();
-            _output =_response.Content.ReadAsStringAsync().Result.ToObject<RootOutput<ProcessReservationOutput>>();
             _output.Success.Should().BeTrue();
             _output.Data.Should().NotBeNull();
             _output.Data.ReservationId.Should<Guid>().NotBeNull();
         }
+        [When("date selected is already reserved")]
+        public async Task WhenDateIsNotAvailable()
+        {
+            await _reservationAPI.ProcessReservation(_selectedReservationDate, _amount);
+            _output = await _reservationAPI.ProcessReservation(_selectedReservationDate, _amount);
+        }
+        [Then("process reservation should return not available error message")]
+        public void ThenShouldReturnError()
+        {
+            _output.Messages.Should().Contain("Date not availabe");
+        }
 
+        [Then("process reservation should return invalid date error message")]
+        public void ThenShouldReturnInvalidDateError()
+        {
+            _output.Messages.Should().Contain("Invalid reserved date");
+        }
     }
 }

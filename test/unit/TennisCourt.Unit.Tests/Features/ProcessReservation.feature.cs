@@ -80,13 +80,17 @@ namespace TennisCourt.Unit.Tests.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="ProcessReservationAvailableDate")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="ProcessReservationAvailableDate")]
         [Xunit.TraitAttribute("FeatureTitle", "ProcessReservation")]
         [Xunit.TraitAttribute("Description", "ProcessReservationAvailableDate")]
-        public void ProcessReservationAvailableDate()
+        [Xunit.InlineDataAttribute("1", "100", new string[0])]
+        [Xunit.InlineDataAttribute("2", "10", new string[0])]
+        public void ProcessReservationAvailableDate(string daysToAdd, string amount, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("daysToAdd", daysToAdd);
+            argumentsOfScenario.Add("amount", amount);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ProcessReservationAvailableDate", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
@@ -99,13 +103,83 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 6
- testRunner.Given("selected advanced date and amount of 100.00", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("selected date D plus {0} and amount of {1}", daysToAdd, amount), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 7
- testRunner.When("date is available to reservation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("reservation is requested", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 8
  testRunner.Then("process reservation returing a valid GUID reservation id", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="ProcessReservationUnavailabeDate")]
+        [Xunit.TraitAttribute("FeatureTitle", "ProcessReservation")]
+        [Xunit.TraitAttribute("Description", "ProcessReservationUnavailabeDate")]
+        [Xunit.InlineDataAttribute("1", "100", new string[0])]
+        [Xunit.InlineDataAttribute("2", "10", new string[0])]
+        public void ProcessReservationUnavailabeDate(string daysToAdd, string amount, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("daysToAdd", daysToAdd);
+            argumentsOfScenario.Add("amount", amount);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ProcessReservationUnavailabeDate", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 14
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 15
+ testRunner.Given(string.Format("selected date D plus {0} and amount of {1}", daysToAdd, amount), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+ testRunner.When("date selected is already reserved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 17
+ testRunner.Then("process reservation should return not available error message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="ProcessReservationretroactiveDate")]
+        [Xunit.TraitAttribute("FeatureTitle", "ProcessReservation")]
+        [Xunit.TraitAttribute("Description", "ProcessReservationretroactiveDate")]
+        [Xunit.InlineDataAttribute("-1", "100", new string[0])]
+        [Xunit.InlineDataAttribute("-2", "10", new string[0])]
+        public void ProcessReservationretroactiveDate(string daysToAdd, string amount, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("daysToAdd", daysToAdd);
+            argumentsOfScenario.Add("amount", amount);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ProcessReservationretroactiveDate", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 23
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 24
+ testRunner.Given(string.Format("selected date D plus {0} and amount of {1}", daysToAdd, amount), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 25
+ testRunner.When("reservation is requested", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 26
+ testRunner.Then("process reservation should return invalid date error message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

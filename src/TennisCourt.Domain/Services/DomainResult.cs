@@ -20,9 +20,9 @@ namespace TennisCourt.Domain.Services
         public bool IsValid() => !Errors.Any();
         public static DomainResult<TEntity> Create() => new();
 
-        public void AddErrors(IList<string> errors)
+        public void AddMessages(IList<string> messages)
         {
-            Errors.AddRange(errors);
+            Errors.AddRange(messages);
         }
 
         public DomainResult<TEntity> WithSucess(TEntity entity)
