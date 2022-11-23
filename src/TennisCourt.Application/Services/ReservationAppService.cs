@@ -80,9 +80,8 @@ namespace TennisCourt.Application.Services
                                                                          reservationsByNewDate.ToList());
             if (domainResult.IsValid())
             {
-                var newReservation = domainResult.Entity;
-                await _repository.AddAsync(newReservation);
-                await _repository.UpdateAsync(reservation);
+                var updatedReservation = domainResult.Entity;
+                await _repository.UpdateAsync(updatedReservation);
             }
             return ConvertToOutput<RescheduleReservationOutput,Reservation>(domainResult);
 

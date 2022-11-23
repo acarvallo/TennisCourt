@@ -19,7 +19,7 @@ namespace TennisCourt.Domain.Models
         }
         public Money Amount { get; private set; }
         public Money RefundAmount { get; private set; }
-        public DateTime ReservedDate { get; }
+        public DateTime ReservedDate { get; private set; }
         public ReservationStatusEnum ReservationStatus => ReservationHistory.Single(p => p.IsActive()).ReservationStatus;
         public IList<ReservationStatusHistory> ReservationHistory { get; private set; } = new List<ReservationStatusHistory>();
 
@@ -60,6 +60,11 @@ namespace TennisCourt.Domain.Models
         {
             RefundAmount = Money.Create(Amount);
             Amount = (Money)0;
+        }
+
+        internal void UpdateDate(DateTime newDate)
+        {
+            ReservedDate = newDate;
         }
     }
 }

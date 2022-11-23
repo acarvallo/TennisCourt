@@ -15,17 +15,15 @@ namespace TennisCourt.Domain.Services
 
             Reservation newReservation = new(reservedDate, amount);
 
-            var errors = new List<string>();
-            if (!newReservation.IsValid(errors))
-            {
-                result.AddMessages(errors);
+            ValidateReservation(newReservation, result);
+
+            if (!result.IsValid())
                 return result;
-            }
-            if(!IsDateAvailable(newReservation,reservationsByDate))
-            {
-                result.AddMessage("Date not availabe");
+
+            ValidateDateAvailability(newReservation, reservationsByDate, result);
+
+            if (!result.IsValid())
                 return result;
-            }
 
             return result.WithSucess(newReservation);
         }
@@ -33,42 +31,72 @@ namespace TennisCourt.Domain.Services
         {
             var result = DomainResult<Reservation>.Create();
 
-            if(reservation.ReservationStatus!= Enums.ReservationStatusEnum.READY_TO_PLAY)
-            {
-                result.AddMessage("Reservation is not active");
+            ValidateReservation(reservation, result);
+
+            if (!result.IsValid())
                 return result;
-            }
 
             reservation.Cancel();
             reservation.MakeRefund();
 
             return result.WithSucess(reservation);
         }
-        public DomainResult<Reservation>RescheduleReservation(Reservation reservation, 
-                                                              DateTime newDate, 
+        public DomainResult<Reservation> RescheduleReservation(Reservation reservation,
+                                                              DateTime newDate,
                                                               IList<Reservation> reservationsByNewDate)
         {
             var result = DomainResult<Reservation>.Create();
 
+            ValidateReservationIsActive(reservation, result);
+
+            if (!result.IsValid())
+                return result;
+
+            reservation.UpdateDate(newDate);
+
+            ValidateDateAvailability(reservation, reservationsByNewDate, result);
+
+            if (!result.IsValid())
+                return result;
+
+            ValidateReservation(reservation, result);
+
+            if (!result.IsValid())
+                return result;
+
+            reservation.SetAsReschedule();
+
+            return result.WithSucess(reservation);
+
+        }
+        private void ValidateDateAvailability(Reservation reservation, IList<Reservation> reservationsByDate, DomainResult<Reservation> result)
+        {
+            if (!IsDateAvailable(reservation, reservationsByDate))
+            {
+                result.AddMessage("Date not availabe");
+            }
+        }
+        private bool IsDateAvailable(Reservation reservation, IList<Reservation> reservationsByDate)
+        {
+            return !reservationsByDate.Any(p => p.ReservedDate == reservation.ReservedDate
+            && p.ReservationStatus == Enums.ReservationStatusEnum.READY_TO_PLAY);
+        }
+        private void ValidateReservationIsActive(Reservation reservation, DomainResult<Reservation> result)
+        {
             if (reservation.ReservationStatus != Enums.ReservationStatusEnum.READY_TO_PLAY)
             {
                 result.AddMessage("Reservation is not active");
-                return result;
+ 
             }
-
-            var newRervationResult = ProcessReservation(newDate, (decimal)reservation.Amount, reservationsByNewDate);
-
-            if (newRervationResult.IsValid())
-            {
-                reservation.SetAsReschedule();
-            }
-            return newRervationResult;
-
         }
-        private bool IsDateAvailable(Reservation newReservation, IList<Reservation> reservationsByDate)
+        private void ValidateReservation(Reservation reservation, DomainResult<Reservation> result)
         {
-            return !reservationsByDate.Any(p => p.ReservedDate == newReservation.ReservedDate
-            && p.ReservationStatus == Enums.ReservationStatusEnum.READY_TO_PLAY);
+            var errors = new List<string>();
+
+            if (!reservation.IsValid(errors))
+            {
+                result.AddMessages(errors);
+            }
         }
     }
 }
