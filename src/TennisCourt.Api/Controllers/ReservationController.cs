@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TennisCourt.Application.DTO;
 using TennisCourt.Application.DTO.CancelReservation;
+using TennisCourt.Application.DTO.GetReservation;
 using TennisCourt.Application.DTO.ProcessReservation;
 using TennisCourt.Application.DTO.RescheduleReservation;
 using TennisCourt.Application.Interface;
@@ -26,6 +27,14 @@ namespace TennisCourt.Api.Controllers
             return Result(output);
         }
 
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(RootOutput<GetReservationOuput>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Get([FromRoute] Guid id)
+        {
+            var output = await _reservationService.GetReservation(id);
+            return Result(output);
+        }
 
         [HttpPost("reschedule")]
         [ProducesResponseType(typeof(RootOutput<RescheduleReservationOutput>), StatusCodes.Status200OK)]
