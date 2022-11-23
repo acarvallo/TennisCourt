@@ -11,6 +11,6 @@ namespace TennisCourt.Application.DTO.ProcessReservation
         public Guid ReservationId { get; set; }
         public string ReservationStatus { get; set; }
         public DateTime ReservedDate { get; set; }
-        public string Amount { get; internal set; }
+        public decimal Amount { get; set; }
     }
 }

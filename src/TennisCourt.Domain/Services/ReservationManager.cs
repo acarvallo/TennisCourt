@@ -40,8 +40,30 @@ namespace TennisCourt.Domain.Services
             }
 
             reservation.Cancel();
+            reservation.MakeRefund();
 
             return result.WithSucess(reservation);
+        }
+        public DomainResult<Reservation>RescheduleReservation(Reservation reservation, 
+                                                              DateTime newDate, 
+                                                              IList<Reservation> reservationsByNewDate)
+        {
+            var result = DomainResult<Reservation>.Create();
+
+            if (reservation.ReservationStatus != Enums.ReservationStatusEnum.READY_TO_PLAY)
+            {
+                result.AddMessage("Reservation is not active");
+                return result;
+            }
+
+            var newRervationResult = ProcessReservation(newDate, (decimal)reservation.Amount, reservationsByNewDate);
+
+            if (newRervationResult.IsValid())
+            {
+                reservation.SetAsReschedule();
+            }
+            return newRervationResult;
+
         }
         private bool IsDateAvailable(Reservation newReservation, IList<Reservation> reservationsByDate)
         {

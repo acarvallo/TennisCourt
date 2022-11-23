@@ -51,5 +51,15 @@ namespace TennisCourt.Domain.Models
             return !errors.Any();
         }
 
+        public void SetAsReschedule()
+        {
+            ChangeStatus(ReservationStatusEnum.RESCHEDULED);
+        }
+
+        internal void MakeRefund()
+        {
+            RefundAmount = Money.Create(Amount);
+            Amount = (Money)0;
+        }
     }
 }

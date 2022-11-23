@@ -11,6 +11,6 @@ namespace TennisCourt.Application.DTO.CancelReservation
         public Guid ReservationId { get; set; }
         public string ReservationStatus { get; set; }
         public DateTime ReservedDate { get;  set; }
-        public string Amount { get; set; }
+        public decimal RefundAmount { get; set; }
     }
 }

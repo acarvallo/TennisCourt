@@ -18,6 +18,8 @@ namespace TennisCourt.Domain.ValueObjects
         {
             yield return Value;
         }
+        public static Money Create(Money money) => new(money.Value);
+
         public static explicit operator decimal(Money money) => money.Value;
 
         public static explicit operator Money(decimal value) => new(value);

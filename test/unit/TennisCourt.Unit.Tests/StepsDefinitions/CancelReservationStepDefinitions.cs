@@ -18,10 +18,10 @@ namespace TennisCourt.Unit.Tests.StepsDefinitions
         {
             _reservationAPI = reservationAPI;
         }
-        [Given("the id of a existing and active reservation")]
-        public async Task GivenValidReservationId()
+        [Given("the id of a existing and active reservation of (.*)")]
+        public async Task GivenValidReservationId(decimal amount)
         {
-            var output = await _reservationAPI.ProcessReservation(DateTime.Now, 100);
+            var output = await _reservationAPI.ProcessReservation(DateTime.Now, amount);
             _validReservationId = output.Data.ReservationId;
         }
         [Given("the id of a non existing reservation")]
@@ -35,11 +35,12 @@ namespace TennisCourt.Unit.Tests.StepsDefinitions
         {
             _output = await _reservationAPI.CancelReservation(_validReservationId);
         }
-        [Then("resevation status should change to (.*)")]
-        public void ThenReservationStatusShouldChange(string reservationStatus)
+        [Then("resevation status should change to (.*) and Refund same as (.*)")]
+        public void ThenReservationStatusShouldChange(string reservationStatus,decimal amount)
         {
             _output.Success.Should().BeTrue();
             _output.Data.ReservationStatus.Should().Be(reservationStatus);
+            _output.Data.RefundAmount.Should().Be(amount);
         }
         [Then("should return essage error (.*)")]
         public void ShouldReturnMessageError(string message)

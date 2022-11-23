@@ -25,7 +25,7 @@ namespace TennisCourt.Infra.Data.Repositories.Base
         {
             get
             {
-                return DbSet.AsNoTracking();
+                return DbSet.Where(p => p.Status == Domain.Enums.EntityStatusEnum.Active).AsNoTracking();
             }
         }
 
@@ -33,7 +33,7 @@ namespace TennisCourt.Infra.Data.Repositories.Base
         {
             get
             {
-                return DbSet.AsQueryable<TEntity>();
+                return DbSet.Where(p=>p.Status==Domain.Enums.EntityStatusEnum.Active).AsQueryable<TEntity>();
             }
         }
 

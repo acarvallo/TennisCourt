@@ -19,13 +19,13 @@ namespace TennisCourt.Application.AutoMapper
             CreateMap<Reservation, ProcessReservationOutput>()
                  .ForMember(p => p.ReservationId, src => src.MapFrom(p => p.Id))
                  .ForMember(p=>p.ReservedDate,src=>src.MapFrom(p=>p.ReservedDate))
-                 .ForMember(p => p.Amount, src => src.MapFrom(p => p.Amount.ToString()))
+                 .ForMember(p => p.Amount, src => src.MapFrom(p => p.Amount.Value))
                  .ForMember(p => p.ReservationStatus, src => src.MapFrom(p => p.ReservationStatus.ToString()));
 
             CreateMap<Reservation, CancelReservationOutput>()
                  .ForMember(p => p.ReservationId, src => src.MapFrom(p => p.Id))
                  .ForMember(p => p.ReservedDate, src => src.MapFrom(p => p.ReservedDate))
-                 .ForMember(p => p.Amount, src => src.MapFrom(p => p.Amount.ToString()))
+                 .ForMember(p => p.RefundAmount, src => src.MapFrom(p => p.RefundAmount.Value))
                  .ForMember(p => p.ReservationStatus, src => src.MapFrom(p => p.ReservationStatus.ToString()));
 
 

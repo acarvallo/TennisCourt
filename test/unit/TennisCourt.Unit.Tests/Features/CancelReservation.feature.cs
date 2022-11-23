@@ -83,12 +83,13 @@ namespace TennisCourt.Unit.Tests.Features
         [Xunit.SkippableTheoryAttribute(DisplayName="CancelReservationWhenValidId")]
         [Xunit.TraitAttribute("FeatureTitle", "CancelReservation")]
         [Xunit.TraitAttribute("Description", "CancelReservationWhenValidId")]
-        [Xunit.InlineDataAttribute("CANCELED", new string[0])]
-        public void CancelReservationWhenValidId(string reservationStatus, string[] exampleTags)
+        [Xunit.InlineDataAttribute("CANCELED", "100.00", new string[0])]
+        public void CancelReservationWhenValidId(string reservationStatus, string amount, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("reservationStatus", reservationStatus);
+            argumentsOfScenario.Add("amount", amount);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CancelReservationWhenValidId", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
@@ -101,13 +102,13 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 6
- testRunner.Given("the id of a existing and active reservation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("the id of a existing and active reservation of {0}", amount), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 7
  testRunner.When("canceling is requested", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 8
- testRunner.Then(string.Format("resevation status should change to {0}", reservationStatus), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("resevation status should change to {0} and Refund same as {1}", reservationStatus, amount), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
