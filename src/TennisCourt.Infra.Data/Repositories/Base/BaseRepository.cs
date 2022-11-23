@@ -65,22 +65,22 @@ namespace TennisCourt.Infra.Data.Repositories.Base
 
         public bool Exists(Guid id)
         {
-            return DbSet.Any(x => x.Id == id);
+            return GetAllQueryTracking.Any(x => x.Id == id);
         }
 
         public async Task<bool> ExistsAsync(Guid id)
         {
-            return await DbSet.AnyAsync(x => x.Id == id);
+            return await GetAllQueryTracking.AnyAsync(x => x.Id == id);
         }
 
         public TEntity GetById(Guid id)
         {
-            return DbSet.FirstOrDefault(x => x.Id == id);
+            return GetAllQueryTracking.FirstOrDefault(x => x.Id == id);
         }
 
         public async Task<TEntity> GetByIdAsync(Guid id)
         {
-            return await DbSet.FirstOrDefaultAsync(x => x.Id == id);
+            return await GetAllQueryTracking.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public void Dispose()

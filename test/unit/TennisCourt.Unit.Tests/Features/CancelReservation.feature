@@ -9,3 +9,11 @@ Scenario: CancelReservationWhenValidId
     Examples:
 	| reservationStatus |
 	| CANCELED          |
+
+Scenario: CancelReservationWhenInvalidId
+	Given the id of a non existing reservation 
+	When canceling is requested
+	Then should return essage error <message>
+    Examples:
+	| message                    |
+	| Invalid reservation ID     |

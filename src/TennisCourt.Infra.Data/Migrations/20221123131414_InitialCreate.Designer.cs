@@ -12,7 +12,7 @@ using TennisCourt.Infra.Data.Context;
 namespace TennisCourt.Infra.Data.Migrations
 {
     [DbContext(typeof(TennisCourtContext))]
-    [Migration("20221122225329_InitialCreate")]
+    [Migration("20221123131414_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

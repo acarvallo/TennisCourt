@@ -24,6 +24,12 @@ namespace TennisCourt.Unit.Tests.StepsDefinitions
             var output = await _reservationAPI.ProcessReservation(DateTime.Now, 100);
             _validReservationId = output.Data.ReservationId;
         }
+        [Given("the id of a non existing reservation")]
+        public void GivenInvalidReservationId()
+        {
+            _validReservationId = Guid.NewGuid();
+        }
+
         [When("canceling is requested")]
         public async Task WhenCancelingIsRequested()
         {
@@ -34,6 +40,12 @@ namespace TennisCourt.Unit.Tests.StepsDefinitions
         {
             _output.Success.Should().BeTrue();
             _output.Data.ReservationStatus.Should().Be(reservationStatus);
+        }
+        [Then("should return essage error (.*)")]
+        public void ShouldReturnMessageError(string message)
+        {
+            _output.Success.Should().BeFalse();
+            _output.Messages.Should().Contain(message);
         }
 
     }

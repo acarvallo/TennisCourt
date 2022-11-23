@@ -40,7 +40,7 @@ namespace TennisCourt.Application.Services
 
             if (domainResult.IsValid())
             {
-               await _repository.UpdateAsync(domainResult.Entity);
+               await _repository.UpdateAsync(reservation);
             }
 
             return ConvertToOutput<CancelReservationOutput, Reservation>(domainResult);

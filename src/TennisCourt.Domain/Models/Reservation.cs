@@ -8,7 +8,7 @@ using TennisCourt.Domain.ValueObjects;
 
 namespace TennisCourt.Domain.Models
 {
-    public sealed class Reservation : BaseEntity, IAggregateRoot
+    public class Reservation : BaseEntity, IAggregateRoot
     {
         private Reservation() { }
         public Reservation(DateTime reservedDate, decimal value)

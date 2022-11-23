@@ -22,7 +22,6 @@ namespace TennisCourt.Unit.Tests.Infra
             var builder = new DbContextOptionsBuilder<TennisCourtContext>();
 
             builder.UseSqlServer(ConnectionString);
-
             dbContext = new TennisCourtContext(builder.Options);
 
             dbContext.Database.Migrate();
