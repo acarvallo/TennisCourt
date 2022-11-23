@@ -2,6 +2,7 @@
 using TennisCourt.Application.DTO;
 using TennisCourt.Application.DTO.CancelReservation;
 using TennisCourt.Application.DTO.ProcessReservation;
+using TennisCourt.Application.DTO.RescheduleReservation;
 using TennisCourt.Application.Interface;
 
 namespace TennisCourt.Api.Controllers
@@ -22,6 +23,15 @@ namespace TennisCourt.Api.Controllers
         public async Task<IActionResult> Post([FromBody] ProcessReservationInput input)
         {
             var output = await _reservationService.ProcessReservation(input);
+            return Result(output);
+        }
+
+
+        [HttpPost("reschedule")]
+        [ProducesResponseType(typeof(RootOutput<RescheduleReservationOutput>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Post([FromBody] RescheduleReservationInput input)
+        {
+            var output = await _reservationService.RescheduleReservation(input);
             return Result(output);
         }
 

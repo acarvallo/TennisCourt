@@ -1,7 +1,5 @@
 ﻿Feature: CancelReservation
 
-A short summary of the feature
-
 Scenario: CancelReservationWhenValidId
 	Given the id of a existing and active reservation of <amount>
 	When canceling is requested

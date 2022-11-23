@@ -2,6 +2,7 @@
 using TennisCourt.Application.DTO;
 using TennisCourt.Application.DTO.CancelReservation;
 using TennisCourt.Application.DTO.ProcessReservation;
+using TennisCourt.Application.DTO.RescheduleReservation;
 using TennisCourt.Application.Interface;
 using TennisCourt.Domain.Interfaces.Repositories;
 using TennisCourt.Domain.Models;
@@ -64,9 +65,27 @@ namespace TennisCourt.Application.Services
             }
             return ConvertToOutput<ProcessReservationOutput, Reservation>(domainResult);
         }
-        public Task<Reservation> RescheduleReservation(Reservation reservation)
+        public async Task<RootOutput<RescheduleReservationOutput>> RescheduleReservation(RescheduleReservationInput input)
         {
-            throw new NotImplementedException();
+            var reservation = await _repository.GetByIdAsync(input.ReservationId);
+            var reservationsByNewDate = await _repository.GetByDate(input.NewDate);
+
+            if (reservation == null)
+            {
+                return RootOutput<RescheduleReservationOutput>.WithErrors("Invalid reservation ID");
+            }
+
+            var domainResult = _reservationManager.RescheduleReservation(reservation, 
+                                                                        input.NewDate,
+                                                                         reservationsByNewDate.ToList());
+            if (domainResult.IsValid())
+            {
+                var newReservation = domainResult.Entity;
+                await _repository.AddAsync(newReservation);
+                await _repository.UpdateAsync(reservation);
+            }
+            return ConvertToOutput<RescheduleReservationOutput,Reservation>(domainResult);
+
         }
         private RootOutput<TOutput> ConvertToOutput<TOutput, TEntity>(DomainResult<TEntity> domainResult) where TEntity : BaseEntity
         {
