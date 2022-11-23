@@ -1,6 +1,9 @@
-﻿using System;
+﻿using FluentAssertions;
+using System;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
+using TennisCourt.Application.DTO;
+using TennisCourt.Application.DTO.CancelReservation;
 using TennisCourt.Unit.Tests.API;
 
 namespace TennisCourt.Unit.Tests.StepsDefinitions
@@ -9,6 +12,7 @@ namespace TennisCourt.Unit.Tests.StepsDefinitions
     public sealed class CancelReservationStepDefinitions
     {
         private readonly ReservationAPI _reservationAPI;
+        private RootOutput<CancelReservationOutput> _output;
         Guid _validReservationId;
         public CancelReservationStepDefinitions(ReservationAPI reservationAPI)
         {
@@ -23,11 +27,13 @@ namespace TennisCourt.Unit.Tests.StepsDefinitions
         [When("canceling is requested")]
         public async Task WhenCancelingIsRequested()
         {
-
+            _output = await _reservationAPI.CancelReservation(_validReservationId);
         }
         [Then("resevation status should change to (.*)")]
-        public void ThenReservationStatusShouldChange(string reservationStatus) 
-        { 
+        public void ThenReservationStatusShouldChange(string reservationStatus)
+        {
+            _output.Success.Should().BeTrue();
+            _output.Data.ReservationStatus.Should().Be(reservationStatus);
         }
 
     }
